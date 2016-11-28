@@ -4,21 +4,18 @@ import java.util.List;
 
 public class Reporter {
 
-    private static final String HEADER_REPORT = "DATE          | AMOUNT  | BALANCE";
+    private static final String REPORT_HEADER = "DATE          | AMOUNT  | BALANCE";
     private Integer subtotal = 0;
+    private StringBuilder report = new StringBuilder(REPORT_HEADER + "\n");
 
     public String printReport(List<Transaction> transactions){
-        StringBuilder report = createReport();
-        transactions.forEach(t -> logTransaction(report, t.getDate(), t.getAmount()));
+        transactions.forEach(t -> logTransaction(t.getDate(), t.getAmount()));
         return report.toString();
     }
 
-    private void logTransaction(StringBuilder body, String date, Integer transaction) {
-        body.append(String.format("%s | %.2f               | %.2f", date, (double) transaction , (double) (subtotal += transaction)));
-        body.append("\n");
+    private void logTransaction(String date, Integer transaction) {
+        report.append(String.format("%s | %.2f               | %.2f", date, (double) transaction , (double) (subtotal += transaction)));
+        report.append("\n");
     }
 
-    private StringBuilder createReport() {
-        return new StringBuilder(HEADER_REPORT + "\n");
-    }
 }
